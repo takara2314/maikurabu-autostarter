@@ -25,9 +25,9 @@ func main() {
 
 	// tmux画面分割
 	tmuxSetup := `
-		tmux send-keys -t server.1 "tmux split-window -v -p 50" ENTER;
-		tmux send-keys -t server.1 "tmux selectp -t 1" ENTER;
-		tmux send-keys -t server-1 "tmux split-window -h -p 50" ENTER;
+		tmux send-keys -t server "tmux split-window -h -p 50" ENTER;
+		tmux send-keys -t server "tmux selectp -t 0" ENTER;
+		tmux send-keys -t server "tmux split-window -v -p 50" ENTER;
 	`
 
 	<-time.After(1 * time.Second)
