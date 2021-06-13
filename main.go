@@ -29,8 +29,8 @@ func main() {
 
 	<-time.After(1 * time.Second)
 
-	cmd = exec.Command("/bin/sh", "-c", tmuxSetup)
-	err = cmd.Run()
+	cmd2 := exec.Command("/bin/sh", "-c", tmuxSetup)
+	err = cmd2.Run()
 	if err != nil {
 		log.Println(err)
 		panic(err)
