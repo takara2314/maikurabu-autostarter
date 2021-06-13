@@ -28,13 +28,12 @@ func main() {
 	tmuxSetup := `
 		tmux send-keys -t server "cd ~/maikurabu" ENTER;
 		tmux send-keys -t server "tmux split-window -h -p 50" ENTER;
-		tmux send-keys -t server "tmux selectp -t 0" ENTER;
+		tmux send-keys -t server "tmux selectp -t 1" ENTER;
 		tmux send-keys -t server "cd ~/maikurabu" ENTER;
-		tmux send-keys -t server "ls" ENTER;
 		tmux send-keys -t server "tmux split-window -v -p 50" ENTER;
-		tmux send-keys -t server "tmux selectp -t 0" ENTER;
-		tmux send-keys -t server "top" ENTER;
 		tmux send-keys -t server "tmux selectp -t 2" ENTER;
+		tmux send-keys -t server "top" ENTER;
+		tmux send-keys -t server "tmux selectp -t 1" ENTER;
 	`
 
 	<-time.After(1 * time.Second)
