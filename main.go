@@ -1,15 +1,18 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"os"
 	"os/exec"
+	"os/signal"
+	"syscall"
 	"time"
 )
 
 func main() {
 	// tmux起動
-	cmd := exec.Command("/bin/sh", "-c", "tmux new -t server")
+	cmd := exec.Command("/bin/sh", "-c", "tmux new -s server")
 	cmd.Stdin = os.Stdin
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
@@ -34,5 +37,14 @@ func main() {
 	if err != nil {
 		log.Println(err)
 		panic(err)
+	}
+
+	// シグナル設定 (Ctrl + c などのコマンドを押下したときのシグナルを受け取る)
+	c := make(chan os.Signal, 1)
+	signal.Notify(c, syscall.SIGINT, syscall.SIGTERM)
+	for {
+		<-c
+		fmt.Println("killing program")
+		break
 	}
 }
