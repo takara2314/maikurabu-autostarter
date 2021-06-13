@@ -6,6 +6,7 @@ import (
 	"os"
 	"os/exec"
 	"os/signal"
+	"strings"
 	"syscall"
 	"time"
 )
@@ -38,11 +39,16 @@ func main() {
 
 	<-time.After(1 * time.Second)
 
-	cmd2 := exec.Command("/bin/sh", "-c", tmuxSetup)
-	err := cmd2.Run()
-	if err != nil {
-		log.Println(err)
-		panic(err)
+	tmuxCommands := strings.Split(tmuxSetup, "\n")
+
+	for _, command := range tmuxCommands {
+		cmd2 := exec.Command("/bin/sh", "-c", command)
+		err := cmd2.Run()
+		if err != nil {
+			log.Println(err)
+			panic(err)
+		}
+		time.Sleep(100 * time.Millisecond)
 	}
 
 	// シグナル設定 (Ctrl + C などのコマンドを押下したときのシグナルを受け取る)
