@@ -25,9 +25,9 @@ func main() {
 
 	// tmux画面分割
 	tmuxSetup := `
-		tmux send-keys -t server.0 "tmux split-window -v -p 50" ENTER;
-		tmux send-keys -t server.0 "tmux selectp -t 1" ENTER;
-		tmux send-keys -t server-0 "tmux split-window -h -p 50" ENTER;
+		tmux send-keys -t server.1 "tmux split-window -v -p 50" ENTER;
+		tmux send-keys -t server.1 "tmux selectp -t 1" ENTER;
+		tmux send-keys -t server-1 "tmux split-window -h -p 50" ENTER;
 	`
 
 	<-time.After(1 * time.Second)
@@ -41,7 +41,7 @@ func main() {
 
 	// シグナル設定 (Ctrl + c などのコマンドを押下したときのシグナルを受け取る)
 	c := make(chan os.Signal, 1)
-	signal.Notify(c, syscall.SIGINT, syscall.SIGTERM)
+	signal.Notify(c, syscall.SIGHUP, syscall.SIGINT, syscall.SIGQUIT, syscall.SIGKILL, syscall.SIGTERM)
 	for {
 		<-c
 		fmt.Println("killing program")
