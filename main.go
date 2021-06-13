@@ -17,11 +17,12 @@ func main() {
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 
-	err := cmd.Run()
-	if err != nil {
-		log.Println(err)
-		panic(err)
-	}
+	go func(c *exec.Cmd) {
+		err := c.Run()
+		if err != nil {
+			fmt.Println(err)
+		}
+	}(cmd)
 
 	// tmux画面分割
 	tmuxSetup := `
@@ -33,7 +34,7 @@ func main() {
 	<-time.After(1 * time.Second)
 
 	cmd2 := exec.Command("/bin/sh", "-c", tmuxSetup)
-	err = cmd2.Run()
+	err := cmd2.Run()
 	if err != nil {
 		log.Println(err)
 		panic(err)
