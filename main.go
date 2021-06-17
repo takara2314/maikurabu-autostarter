@@ -12,8 +12,10 @@ import (
 )
 
 func main() {
+	// ベースソフト起動待ち
+	time.Sleep(5 * time.Second)
 	// tmux起動
-	cmd := exec.Command("/bin/sh", "-c", "tmux new -s server")
+	cmd := exec.Command("/bin/sh", "-c", "tmux new -s server -d")
 	cmd.Stdin = os.Stdin
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
@@ -28,9 +30,11 @@ func main() {
 	// tmux画面分割
 	tmuxSetup := `
 		tmux send-keys -t server "cd ~/maikurabu" ENTER;
+		tmux send-keys -t server "start" ENTER;
 		tmux send-keys -t server "tmux split-window -h -p 50" ENTER;
 		tmux send-keys -t server "tmux selectp -t 1" ENTER;
 		tmux send-keys -t server "cd ~/maikurabu" ENTER;
+		tmux send-keys -t server "ls" ENTER;
 		tmux send-keys -t server "tmux split-window -v -p 50" ENTER;
 		tmux send-keys -t server "tmux selectp -t 2" ENTER;
 		tmux send-keys -t server "top" ENTER;
