@@ -36,8 +36,7 @@ func main() {
 		tmux send-keys -t server "ls" ENTER;
 		tmux send-keys -t server "tmux split-window -v -p 50" ENTER;
 		tmux send-keys -t server "tmux selectp -t 2" ENTER;
-		tmux send-keys -t server "top" ENTER;
-		wait
+		tmux send-keys -t server "echo \"「top」と打つとメモリやCPUの使用率が見れるよ！\"" ENTER;
 		tmux send-keys -t server "tmux selectp -t 0" ENTER;
 		tmux send-keys -t server "start" ENTER;
 	`
@@ -47,18 +46,13 @@ func main() {
 	tmuxCommands := strings.Split(tmuxSetup, "\n")
 
 	for _, command := range tmuxCommands {
-		if command != "wait" {
-			cmd2 := exec.Command("/bin/sh", "-c", command)
-			err := cmd2.Run()
-			if err != nil {
-				log.Println(err)
-				panic(err)
-			}
-			time.Sleep(100 * time.Millisecond)
-			continue
+		cmd2 := exec.Command("/bin/sh", "-c", command)
+		err := cmd2.Run()
+		if err != nil {
+			log.Println(err)
+			panic(err)
 		}
-
-		time.Sleep(1 * time.Second)
+		time.Sleep(100 * time.Millisecond)
 	}
 
 	// シグナル設定 (Ctrl + C などのコマンドを押下したときのシグナルを受け取る)
